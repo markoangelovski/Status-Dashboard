@@ -1,37 +1,38 @@
-// TODO: Validate if user is logged in https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions#using-headers
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-"use client";
-import { useRouter } from "next/navigation";
+import { verifyToken, toBase64, verifyBearerToken } from "../Helpers/helpers";
+
+let isTokenOk = true;
 
 const Login = () => {
-  const router = useRouter();
+  // Check if logged in user is trying to access
+  const token = cookies().get("auth")?.value as string;
+  if (verifyBearerToken(token)) redirect("/");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  async function handleLogin(formData: FormData) {
+    "use server";
 
-    const token = e.currentTarget.token.value;
+    const token = formData.get("token") as string;
 
-    if (!token) return;
-
-    try {
-      const response = await fetch("/api/login", {
-        headers: {
-          Authorization: `Bearer ${btoa(token)}`
-        }
-      }).then((res) => res.json());
-
-      if (response.ok) {
-        router.push("/");
-      }
-    } catch (error) {
-      console.warn("Error with login: ", error);
+    if (verifyToken(token)) {
+      // @ts-ignore
+      cookies().set("auth", "Bearer " + toBase64(token));
+      isTokenOk = true;
+      redirect("/");
+    } else {
+      // @ts-ignore
+      cookies().set("auth", "");
+      isTokenOk = false;
+      revalidatePath("/login");
     }
-  };
+  }
 
   return (
     <form
-      onSubmit={handleSubmit}
       className="flex justify-center h-screen w-screen items-center"
+      action={handleLogin}
     >
       <div className="w-full md:w-1/2 flex flex-col items-center ">
         <h1 className="text-center text-2xl font-bold text-gray-600 mb-6">
@@ -46,6 +47,11 @@ const Login = () => {
             className="w-full py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 outline-blue-500"
             placeholder="Token"
           ></input>
+          {!isTokenOk && (
+            <div className="absolute text-red-500">
+              Invalid token, please try again.
+            </div>
+          )}
         </div>
 
         <div className="w-3/4 mt-4">
@@ -62,18 +68,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// type Data = {};
-
-// export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
-//   context
-// ) => {
-//   const res = await fetch("https://.../data");
-//   const data: Data = await res.json();
-
-//   return {
-//     props: {
-//       data
-//     }
-//   };
-// };
