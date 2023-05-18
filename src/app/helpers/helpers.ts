@@ -43,3 +43,55 @@ export const verifyToken = (token: string): boolean => {
 
 export const toBase64 = (token: string): string =>
   Buffer.from(token).toString("base64").replaceAll("=", "");
+
+export const timeDist = (date: string): string => {
+  let isInPast;
+  let totalMilisDiffFloat = new Date().getTime() - new Date(date).getTime();
+
+  // Check if the passed date is in the past or future
+  if (totalMilisDiffFloat > 0) {
+    isInPast = true;
+  } else {
+    isInPast = false;
+    totalMilisDiffFloat = totalMilisDiffFloat * -1;
+  }
+
+  const totalSecondsDiffFloat = totalMilisDiffFloat / 1000;
+  const totalMinutesDiffFloat = totalSecondsDiffFloat / 60;
+  const totalHoursDiffFloat = totalMinutesDiffFloat / 60;
+
+  const hoursDiffInt = Math.floor(totalHoursDiffFloat);
+
+  const minutesDiffFloat = totalHoursDiffFloat - hoursDiffInt;
+  const minutesDiffInt = Math.floor(minutesDiffFloat * 60);
+
+  if (isInPast) {
+    // TODO: rewrite to Switch statement?
+    // Time ago
+    if (hoursDiffInt > 0 && minutesDiffInt > 0) {
+      return `${hoursDiffInt}h ${minutesDiffInt} min ago`;
+    } else if (hoursDiffInt > 0 && minutesDiffInt === 0) {
+      return `${hoursDiffInt}h ago`;
+    } else if (minutesDiffInt > 0) {
+      return `${minutesDiffInt} min ago`;
+    } else {
+      return "Now";
+    }
+  } else {
+    // Time in the future
+    if (hoursDiffInt > 0 && minutesDiffInt > 0) {
+      return `in ${hoursDiffInt}h ${minutesDiffInt} min`;
+    } else if (hoursDiffInt > 0 && minutesDiffInt === 0) {
+      return `in ${hoursDiffInt}h`;
+    } else if (minutesDiffInt > 0) {
+      return `in ${minutesDiffInt} min`;
+    } else {
+      return "Now";
+    }
+  }
+};
+
+export const timeInHandMin = (date: string): string => {
+  const time = new Date(date);
+  return `${time.getHours()}:${time.getMinutes()}`;
+};
