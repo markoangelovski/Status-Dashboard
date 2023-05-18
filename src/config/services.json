@@ -1,16 +1,19 @@
 [
   {
+    "icon": "Create base64 icon for each service",
     "url": "https://booking-machine.azurewebsites.net/health",
     "title": "Booking Machine API",
     "description": "Booking service for Project Manager."
   },
   {
+    "icon": "Create base64 icon for each service",
     "url": "https://pmspa-api.up.railway.app",
     "title": "Project Manager API",
     "description": "Backend for Project Manager websites."
   },
   {
-    "url": "https://markme-api.azurewebsites.net",
+    "icon": "Create base64 icon for each service",
+    "url": "https://markme-api.azurewebsites.net/health",
     "title": "Mark Me API",
     "description": "Backend for Mark Me website."
   }

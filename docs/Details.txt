@@ -1,0 +1,9 @@
+Repo: 
+	- https://github.com/markoangelovski/Status-Dashboard
+Design:
+	- https://www.figma.com/file/WpYJ1iM3uk99TnPBIjVIay/Projects?type=design&node-id=221%3A3&t=PFjVShZs31Gzeqai-1
+Hosted on:
+	- Platform: https://vercel.com/markoangelovski/status-dashboard
+	- Domain: https://status.angelovski.top
+Deployment:
+	- Pushing to Github to master branch triggers the automatic build on Vercel and deployment to live domain

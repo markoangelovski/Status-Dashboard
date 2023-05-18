@@ -1,0 +1,52 @@
+const ago = "2023-05-18T09:48:00.543Z";
+
+const time = (date) => {
+    let isInPast;
+    let totalMilisDiffFloat = new Date() - new Date(date);
+
+    // Check if the passed date is in the past or future
+    if (totalMilisDiffFloat > 0) {
+        isInPast = true;
+    } else {
+        isInPast = false;
+        totalMilisDiffFloat = totalMilisDiffFloat * -1;
+    }
+
+    const totalSecondsDiffFloat = totalMilisDiffFloat / 1000;
+    const totalMinutesDiffFloat = totalSecondsDiffFloat / 60;
+    const totalHoursDiffFloat = totalMinutesDiffFloat / 60;
+
+    const hoursDiffInt = parseInt(totalHoursDiffFloat);
+
+    const minutesDiffFloat = totalHoursDiffFloat - hoursDiffInt;
+    const minutesDiffInt = parseInt(minutesDiffFloat * 60);
+
+    if (isInPast) {
+        // TODO: rewrite to Switch statement?
+        // Time ago
+        if ((hoursDiffInt > 0) && (minutesDiffInt > 0)) {
+            return `${hoursDiffInt}h ${minutesDiffInt} minutes ago`
+        } else if ((hoursDiffInt > 0) && (minutesDiffInt === 0)) {
+            return `${hoursDiffInt}h ago`
+        } else if ((minutesDiffInt > 0)) {
+            return `${minutesDiffInt} minute${minutesDiffInt > 1 ? "s" : ""} ago`
+        } else {
+            return "Now"
+        }
+    } else {
+        // Time in the future
+        if ((hoursDiffInt > 0) && (minutesDiffInt > 0)) {
+            return `in ${hoursDiffInt}h ${minutesDiffInt} minutes`
+        } else if ((hoursDiffInt > 0) && (minutesDiffInt === 0)) {
+            return `in ${hoursDiffInt}h`
+        } else if ((minutesDiffInt > 0)) {
+            return `in ${minutesDiffInt} minute${minutesDiffInt > 1 ? "s" : ""}`
+        } else {
+            return "Now"
+        }
+    }
+}
+
+console.log(new Date().toISOString());
+console.log(ago);
+console.log(time(ago));

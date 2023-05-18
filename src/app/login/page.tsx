@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { verifyToken, toBase64, verifyBearerToken } from "../Helpers/helpers";
+import { verifyToken, toBase64, verifyBearerToken } from "../helpers/helpers";
 
 let isTokenOk = true;
 
@@ -31,20 +31,20 @@ const Login = () => {
 
   return (
     <form
-      className="flex justify-center h-screen w-screen items-center"
+      className="flex h-screen w-screen items-center justify-center"
       action={handleLogin}
     >
-      <div className="w-full md:w-1/2 flex flex-col items-center ">
-        <h1 className="text-center text-2xl font-bold text-gray-600 mb-6">
+      <div className="flex w-full flex-col items-center md:w-1/2 ">
+        <h1 className="mb-6 text-center text-2xl font-bold text-gray-600">
           LOGIN
         </h1>
 
-        <div className="w-3/4 mb-6">
+        <div className="mb-6 w-3/4">
           <input
             type="text"
             name="token"
             id="token"
-            className="w-full py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 outline-blue-500"
+            className="w-full rounded bg-slate-200 px-8 py-4 outline-blue-500 placeholder:font-semibold hover:ring-1"
             placeholder="Token"
           ></input>
           {!isTokenOk && (
@@ -54,10 +54,10 @@ const Login = () => {
           )}
         </div>
 
-        <div className="w-3/4 mt-4">
+        <div className="mt-4 w-3/4">
           <button
             type="submit"
-            className="py-4 bg-blue-400 w-full rounded text-blue-50 font-bold hover:bg-blue-700"
+            className="w-full rounded bg-blue-400 py-4 font-bold text-blue-50 hover:bg-blue-700"
           >
             SUBMIT
           </button>

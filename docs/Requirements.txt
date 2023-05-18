@@ -1,0 +1,33 @@
+Requirements:
+
+- Make a login screen
+- Make a config file that lists all services, their URLs, titles and descriptions.
+- For each service I want to:
+	- Be able to see if the service has been pinged:
+		- this should be a grey pill, the default state when the service has not been pinged.
+	- Ping the service once:
+		- this should switch the pill to "Pinging..." while the service is being pinged.
+		- when the service responds with ok, the pill should switch to green for the next 15 minutes (this depends on how long Azure apps live).
+		- list the last time when the service has been pinged.
+		- list the time when the pill will move from green to grey.
+	- Set the interval for pinging the service:
+		- I can set "ping service each 15 minutes for the following 8 hours"
+		- UI will display if the interval has been configured, how long is the interval, when it ends and will list each attempt at pinging - when it was pinged, what was the result, how long did the ping last.
+
+Ponašanje:
+
+- Dođem na site, svi servisi su unknown.
+- Defaultno stanje je ping once mod.
+- Kad kliknem na ping once:
+	- STATUS se promijeni u In progress/žuto,
+	- LAST PINGED se promijeni u Now,
+	- Ako ping vrati error, STATUS se mijenja u Inactive/crveno,
+	- LAST PINGED se promijeni u 1 minute ago,
+	- RETRY se promijeni u in 1 minute,
+	- Ping se ponavlja svaku minutu dok ne vrati ok,
+	- Kad ping vrati ok, STATUS se mijenja u Active/zeleno,
+	- LAST PINGED se promijeni u x minutes ago,
+	- RETRY se promijeni u --,
+	- RESET se promijeni u in 15 minutes.
+- Kad podesim PING EVERY i FOR THE NEXT, Ping se prebacuje u Ping Interval mod.
+- Ponašanje pinga u interval modu je isto kao i u ping once modu, status svakog pinga je opisan u ping once dijelu tablice.
