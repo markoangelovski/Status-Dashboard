@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { verifyBearerToken } from "@/app/helpers/helpers";
-import { Services } from "@/config/types";
+import { ServiceType } from "@/config/types";
 
-var services: Services = require("../../../config/services.json"); // Using var and require since we are importing JSON https://stackoverflow.com/questions/32950966/typescript-compiler-error-when-importing-json-file
+var services: ServiceType[] = require("../../../config/services.json"); // Using var and require since we are importing JSON https://stackoverflow.com/questions/32950966/typescript-compiler-error-when-importing-json-file
 
 export async function GET(request: Request) {
   const token = cookies().get("auth")?.value as string;
