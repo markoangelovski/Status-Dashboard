@@ -16,4 +16,4 @@ git commit -m "$description"
 # git push -u azure-devops master
 
 echo "Pushing to Github remote repository..."
-git push -u github-prod master
+git push -u github master

@@ -6,6 +6,7 @@ import { useLocalStorage } from "./useLocalStorage";
 import {
   ApiRes,
   ServiceType,
+  SetLocalStorage,
   StatusList,
   StatusType,
   UsePingType
@@ -15,9 +16,10 @@ const resetPing = (
   timer: number, // in miliseconds
   svcUrl: string,
   state: StatusType,
-  setState: Dispatch<SetStateAction<StatusType>>
+  setState: Dispatch<SetStateAction<StatusType>>,
+  set: SetLocalStorage
 ) => {
-  const [set] = useLocalStorage();
+  // const [set] = useLocalStorage();
   // Resets Service Ping stats in state and local storage when rest timer is up
   const svcStat = {
     ...state,
@@ -56,7 +58,8 @@ export const usePing = (service: ServiceType): UsePingType => {
         new Date(svcPingStats.reset).getTime() - new Date().getTime(),
         service.url,
         svcPingStats,
-        setPingStatus
+        setPingStatus,
+        set
       );
     }
   }, []);
@@ -90,7 +93,8 @@ export const usePing = (service: ServiceType): UsePingType => {
         resetPingIn * 60 * 1000,
         service.url,
         pingStatEnd,
-        setPingStatus
+        setPingStatus,
+        set
       );
     };
 
