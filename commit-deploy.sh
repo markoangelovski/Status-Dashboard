@@ -12,8 +12,8 @@ read -p "Enter commit description: " description
 
 git commit -m "$description"
 
-echo "Pushing to Azure DevOps remote repository..."
-git push -u azure-devops master
+# echo "Pushing to Azure DevOps remote repository..."
+# git push -u azure-devops master
 
 echo "Pushing to Github remote repository..."
 git push -u github-prod master
