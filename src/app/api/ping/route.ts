@@ -36,8 +36,13 @@ export async function GET(request: Request) {
       { status: 422 }
     );
 
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, 11 * 1000);
+  });
+
   try {
-    setTimeout(() => {}, 11 * 1000);
     const pingRes = await fetch(url);
 
     const pingResult = await pingRes.json();
