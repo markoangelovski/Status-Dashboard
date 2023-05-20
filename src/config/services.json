@@ -7,7 +7,8 @@
   },
   {
     "icon": "https://source.unsplash.com/user/erondu",
-    "url": "https://pmspa-api.up.railway.app",
+    "url1": "https://pmspa-api.up.railway.app",
+    "url": "http://localstorage:8181",
     "title": "Project Manager API",
     "description": "Backend for Project Manager websites."
   },

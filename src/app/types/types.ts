@@ -36,6 +36,7 @@ export type GetLocalStorage = (key: string) => StatusType | void;
 export type UseLocalStorageType = [SetLocalStorage, GetLocalStorage];
 
 export type ApiRes = {
+  status: number;
   hasErrors: boolean;
   pingOk: boolean;
   message: string;
