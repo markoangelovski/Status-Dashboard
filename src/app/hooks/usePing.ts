@@ -19,7 +19,6 @@ const resetPing = (
   setState: Dispatch<SetStateAction<StatusType>>,
   set: SetLocalStorage
 ) => {
-  // const [set] = useLocalStorage();
   // Resets Service Ping stats in state and local storage when rest timer is up
   const svcStat = {
     ...state,
@@ -106,7 +105,7 @@ export const usePing = (service: ServiceType): UsePingType => {
 
     try {
       const res = await fetchSvc(service.url);
-
+      console.log("Response in usePing: ", res);
       if (res.status === 200 && res.pingOk) {
         setStats(res);
       } else {

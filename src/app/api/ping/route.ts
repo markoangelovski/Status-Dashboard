@@ -37,6 +37,7 @@ export async function GET(request: Request) {
     );
 
   try {
+    setTimeout(() => {}, 11 * 1000);
     const pingRes = await fetch(url);
 
     const pingResult = await pingRes.json();
