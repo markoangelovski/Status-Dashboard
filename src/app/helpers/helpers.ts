@@ -101,10 +101,14 @@ export const timeInTitle = (date: string): string => {
   const year = time.getFullYear();
   const month = time.getMonth() + 1;
   const day = time.getDay();
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
 
   return `${year}-${month < 10 ? "0" + month : month}-${
     day < 10 ? "0" + day : day
-  } ${time.getHours()}:${time.getMinutes()}`;
+  } ${hours < 10 ? "0" + hours : hours}:${
+    minutes < 10 ? "0" + minutes : minutes
+  }`;
 };
 
 export const timeDistInMin = (date1: string, date2: string): number => {
