@@ -1,7 +1,6 @@
 import { tableHeadItems } from "@/app/constants/constants";
 import Service from "../Service/Service";
-
-import { ServiceType } from "@/config/types";
+import { ServiceType } from "@/app/types/types";
 
 var services: ServiceType[] = require("../../../config/services.json");
 

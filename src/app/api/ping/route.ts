@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { verifyBearerToken } from "@/app/helpers/helpers";
-import { ServiceType } from "@/config/types";
+import { ServiceType } from "@/app/types/types";
 
 var services: ServiceType[] = require("../../../config/services.json"); // Using var and require since we are importing JSON https://stackoverflow.com/questions/32950966/typescript-compiler-error-when-importing-json-file
 
@@ -57,7 +57,7 @@ export async function GET(request: Request) {
         hasErrors: false,
         pingOk: false,
         message: "Ping unsuccessful",
-        error
+        ping: error
       },
       { status: 503 }
     );

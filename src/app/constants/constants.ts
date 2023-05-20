@@ -1,6 +1,5 @@
 export const tableHeadItems = [
-  "SERVICE NAME",
-  "SERVICE URL",
+  "SERVICE",
   "STATUS",
   "LAST PINGED",
   "RETRY",
@@ -33,3 +32,8 @@ export const forTheNext = [
   "7 h",
   "8 h"
 ];
+
+export const resetPingIn = 7;
+export const retryPingIn = 1;
+
+export const maxRetries = 3;

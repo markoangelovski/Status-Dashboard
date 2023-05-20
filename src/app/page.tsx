@@ -20,7 +20,7 @@ export default function Home() {
           <div className="container mx-auto mt-12">
             <div className="mt-8 flex flex-col">
               <div className="-my-2 overflow-x-auto py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <div className="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle shadow sm:rounded-lg">
+                <div className="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle sm:rounded-lg">
                   <ServicesListTable />
                 </div>
               </div>

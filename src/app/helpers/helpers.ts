@@ -95,3 +95,24 @@ export const timeInHandMin = (date: string): string => {
   const time = new Date(date);
   return `${time.getHours()}:${time.getMinutes()}`;
 };
+
+export const timeInTitle = (date: string): string => {
+  const time = new Date(date);
+  const year = time.getFullYear();
+  const month = time.getMonth() + 1;
+  const day = time.getDay();
+
+  return `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day
+  } ${time.getHours()}:${time.getMinutes()}`;
+};
+
+export const timeDistInMin = (date1: string, date2: string): number => {
+  const time1 = new Date(date1).getTime();
+  const time2 = new Date(date2).getTime();
+
+  return (time2 - time1) / (60 * 1000);
+};
+
+export const inXMins = (mins: number): string =>
+  new Date(new Date().getTime() + mins * 60 * 1000).toISOString();
