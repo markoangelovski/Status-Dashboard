@@ -31,14 +31,8 @@ const resetPing = (
   }, timer);
 };
 
-const fetchSvc = async (url: string): Promise<ApiRes> => {
-  const result = await fetch("/api/ping?url=" + url);
-  const json = await result.json();
-  return {
-    status: result.status,
-    ...json
-  };
-};
+const fetchSvc = async (url: string): Promise<ApiRes> =>
+  await fetch("/api/ping?url=" + url).then((res) => res.json());
 
 export const usePing = (service: ServiceType): UsePingType => {
   const [set, get] = useLocalStorage();
@@ -105,8 +99,8 @@ export const usePing = (service: ServiceType): UsePingType => {
 
     try {
       const res = await fetchSvc(service.url);
-      console.log("Response in usePing: ", res);
-      if (res.status === 200 && res.pingOk) {
+
+      if (res.pingOk) {
         setStats(res);
       } else {
         setStats(res);
@@ -120,7 +114,6 @@ export const usePing = (service: ServiceType): UsePingType => {
     } catch (error) {
       console.warn("Error while pinging service ", service.title, error);
       setStats({
-        status: 500,
         hasErrors: true,
         pingOk: false,
         message: error as string,
