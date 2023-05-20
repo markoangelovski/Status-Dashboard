@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { maxRetries, resetPingIn, retryPingIn } from "../constants/constants";
-import { inXMins, timeDistInMin } from "../helpers/helpers";
+import { inXMins } from "../helpers/helpers";
 import { useLocalStorage } from "./useLocalStorage";
 import {
   ApiRes,
@@ -37,6 +38,11 @@ const fetchSvc = async (url: string): Promise<ApiRes> =>
 export const usePing = (service: ServiceType): UsePingType => {
   const [set, get] = useLocalStorage();
 
+  // Set reset timeout manually by setting the ?reset=15 query param
+  const searchParams = useSearchParams();
+  const resetPingParam = searchParams.get("reset") as string;
+  const resetPingNum = parseInt(resetPingParam);
+
   const [pingStatus, setPingStatus] = useState<StatusType>({
     status: StatusList.Default,
     lastPinged: "--",
@@ -68,7 +74,7 @@ export const usePing = (service: ServiceType): UsePingType => {
     const setStats = (res: ApiRes) => {
       const pingStatEnd = {
         ...pingStatStart,
-        reset: inXMins(resetPingIn),
+        reset: inXMins(!isNaN(resetPingNum) ? resetPingNum : resetPingIn), // OVDJE
         pingData: res
       };
 

@@ -33,7 +33,7 @@ export const forTheNext = [
   "8 h"
 ];
 
-export const resetPingIn = 7;
+export const resetPingIn = 15;
 export const retryPingIn = 1;
 
 export const maxRetries = 3;
