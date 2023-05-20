@@ -119,6 +119,19 @@ export const usePing = (service: ServiceType): UsePingType => {
       }
     } catch (error) {
       console.warn("Error while pinging service ", service.title, error);
+      setStats({
+        status: 500,
+        hasErrors: true,
+        pingOk: false,
+        message: error as string,
+        ping: {}
+      });
+      if (retries < maxRetries) {
+        retries++;
+        setTimeout(async () => {
+          await pingSvc(service);
+        }, 60 * 1000);
+      }
     }
   };
 
