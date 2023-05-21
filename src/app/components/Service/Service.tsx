@@ -24,7 +24,7 @@ const Service = ({ service }: Props) => {
 
   useEffect(() => {
     // Re-render the UI to display the latest timings
-    const id = setInterval(() => setReRender((prev) => !prev), 30 * 1000);
+    const id = setInterval(() => setReRender((prev) => !prev), 15 * 1000);
 
     return () => clearInterval(id);
   }, []);

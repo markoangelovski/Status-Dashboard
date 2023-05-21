@@ -6,7 +6,7 @@ export type ServiceType = {
 };
 
 export enum StatusList {
-  Default = "--",
+  Loading = "--",
   Unknown = "unknown",
   Active = "active",
   Inactive = "inactive",
@@ -21,7 +21,7 @@ export type PingData = {
 };
 
 export type StatusType = {
-  status: StatusList;
+  status?: StatusList;
   lastPinged: string;
   retry: string;
   reset: string;

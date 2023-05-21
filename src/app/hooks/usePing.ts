@@ -23,7 +23,7 @@ const resetPing = (
   // Resets Service Ping stats in state and local storage when rest timer is up
   const svcStat = {
     ...state,
-    status: StatusList.Default,
+    status: StatusList.Unknown,
     retry: "--"
   };
   setTimeout(() => {
@@ -43,15 +43,15 @@ export const usePing = (service: ServiceType): UsePingType => {
   const resetPingParam = searchParams.get("reset") as string;
   const resetPingNum = parseInt(resetPingParam);
 
-  const [pingStatus, setPingStatus] = useState<StatusType>({
-    status: StatusList.Default,
+  const baseStats = {
+    status: StatusList.Loading,
     lastPinged: "--",
     retry: "--",
     reset: "--",
     pingData: { hasErrors: false, message: "", ping: {}, pingOk: false }
-  });
+  };
 
-  const resetActive = useRef<boolean>(false);
+  const [pingStatus, setPingStatus] = useState<StatusType>(baseStats);
 
   useEffect(() => {
     // Load existing Service Ping stats from Local Storage - used when page reloads to reload the state
@@ -66,6 +66,8 @@ export const usePing = (service: ServiceType): UsePingType => {
         setPingStatus,
         set
       );
+    } else {
+      setPingStatus({ ...baseStats, status: StatusList.Unknown });
     }
   }, []);
 

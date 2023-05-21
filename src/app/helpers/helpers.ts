@@ -63,10 +63,11 @@ export const timeDist = (date: string): string => {
   const hoursDiffInt = Math.floor(totalHoursDiffFloat);
 
   const minutesDiffFloat = totalHoursDiffFloat - hoursDiffInt;
-  const minutesDiffInt = Math.floor(minutesDiffFloat * 60);
+  let minutesDiffInt = Math.floor(minutesDiffFloat * 60);
+
+  if (totalMinutesDiffFloat - minutesDiffInt >= 0.5) minutesDiffInt++;
 
   if (isInPast) {
-    // TODO: rewrite to Switch statement?
     // Time ago
     if (hoursDiffInt > 0 && minutesDiffInt > 0) {
       return `${hoursDiffInt}h ${minutesDiffInt} min ago`;
@@ -100,7 +101,7 @@ export const timeInTitle = (date: string): string => {
   const time = new Date(date);
   const year = time.getFullYear();
   const month = time.getMonth() + 1;
-  const day = time.getDay();
+  const day = time.getDate();
   const hours = time.getHours();
   const minutes = time.getMinutes();
 

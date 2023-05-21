@@ -4,17 +4,5 @@
     "url": "https://booking-machine.azurewebsites.net",
     "title": "Booking Machine API",
     "description": "Booking service for Project Manager."
-  },
-  {
-    "icon": "https://source.unsplash.com/user/erondu",
-    "url": "https://pmspa-api.up.railway.app",
-    "title": "Project Manager API",
-    "description": "Backend for Project Manager websites."
-  },
-  {
-    "icon": "https://source.unsplash.com/user/erondu",
-    "url": "https://markme-api.azurewebsites.net",
-    "title": "Mark Me API",
-    "description": "Backend for Mark Me website."
   }
 ]

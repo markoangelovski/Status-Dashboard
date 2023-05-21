@@ -18,16 +18,20 @@ const StatusPill = ({ type }: Props) => {
       );
     case "inprogress":
       return (
-        <span className="inline-flex whitespace-nowrap rounded-full bg-yellow-100 px-2 text-xs font-semibold leading-5 text-yellow-800">
+        <span className="inline-flex animate-pulse whitespace-nowrap rounded-full bg-yellow-100 px-2 text-xs font-semibold leading-5 text-yellow-800">
           In Progress
+        </span>
+      );
+    case "unknown":
+      return (
+        <span className="inline-flex rounded-full bg-gray-100 px-2 text-xs font-semibold leading-5 text-gray-800">
+          Unknown
         </span>
       );
 
     default:
       return (
-        <span className="inline-flex rounded-full bg-gray-100 px-2 text-xs font-semibold leading-5 text-gray-800">
-          Unknown
-        </span>
+        <span className="inline-flex h-5 w-20 animate-pulse rounded-full bg-gray-100 px-2"></span>
       );
   }
 };
