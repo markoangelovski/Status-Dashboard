@@ -30,9 +30,7 @@ const StatusPill = ({ type }: Props) => {
       );
 
     default:
-      return (
-        <span className="inline-flex h-5 w-20 animate-pulse rounded-full bg-gray-100 px-2"></span>
-      );
+      return null;
   }
 };
 
