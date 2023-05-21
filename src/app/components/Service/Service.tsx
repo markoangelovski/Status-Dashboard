@@ -26,9 +26,7 @@ const Service = ({ service }: Props) => {
     // Re-render the UI to display the latest timings
     const id = setInterval(() => setReRender((prev) => !prev), 30 * 1000);
 
-    return () => {
-      clearInterval(id);
-    };
+    return () => clearInterval(id);
   }, []);
 
   return (
