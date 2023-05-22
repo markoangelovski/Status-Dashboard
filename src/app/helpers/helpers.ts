@@ -94,7 +94,11 @@ export const timeDist = (date: string): string => {
 
 export const timeInHandMin = (date: string): string => {
   const time = new Date(date);
-  return `${time.getHours()}:${time.getMinutes()}`;
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  return `${hours > 9 ? hours : "0" + hours}:${
+    minutes > 9 ? minutes : "0" + minutes
+  }`;
 };
 
 export const timeInTitle = (date: string): string => {
@@ -112,6 +116,21 @@ export const timeInTitle = (date: string): string => {
   }`;
 };
 
+export const addTime = (period: string) => {
+  const [num, type] = period.split(" ");
+
+  let numInt = parseInt(num);
+
+  if (isNaN(numInt)) return;
+
+  if (type === "min") numInt = numInt * 60 * 1000;
+  if (type === "h") numInt = numInt * 60 * 60 * 1000;
+
+  const timeInFuture = new Date().getTime() + numInt;
+
+  return new Date(timeInFuture).toISOString();
+};
+
 export const timeDistInMin = (date1: string, date2: string): number => {
   const time1 = new Date(date1).getTime();
   const time2 = new Date(date2).getTime();
@@ -121,3 +140,15 @@ export const timeDistInMin = (date1: string, date2: string): number => {
 
 export const inXMins = (mins: number): string =>
   new Date(new Date().getTime() + mins * 60 * 1000).toISOString();
+
+export const lStorage = {
+  set(key: string, value: object) {
+    if (key && typeof value === "object") {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
+  },
+  get(key: string) {
+    const svcStr = window.localStorage.getItem(key);
+    if (svcStr) return JSON.parse(svcStr);
+  }
+};

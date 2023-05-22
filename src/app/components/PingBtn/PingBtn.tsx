@@ -1,10 +1,12 @@
 type Prop = {
+  title: string;
   ping: () => Promise<void>;
 };
 
-const PingBtn = ({ ping }: Prop) => {
+const PingBtn = ({ title, ping }: Prop) => {
   return (
     <button
+      title={title}
       onClick={() => ping()}
       className="w-8 cursor-pointer rounded-full border border-gray-500 p-1 hover:bg-blue-200 active:bg-blue-300"
     >

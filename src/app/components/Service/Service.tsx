@@ -5,28 +5,97 @@ import PingBtn from "../PingBtn/PingBtn";
 
 import { usePing } from "@/app/hooks/usePing";
 
-import { timeDist, timeInHandMin, timeInTitle } from "@/app/helpers/helpers";
+import {
+  addTime,
+  lStorage,
+  timeDist,
+  timeInHandMin,
+  timeInTitle
+} from "@/app/helpers/helpers";
 
 import { forTheNext, pingEvery } from "@/app/constants/constants";
 import { useEffect, useState } from "react";
 import { ServiceType } from "@/app/types/types";
+import { useLocalStorage } from "@/app/hooks/useLocalStorage";
 
 interface Props {
   service: ServiceType;
 }
 
 const Service = ({ service }: Props) => {
+  const [set, get] = useLocalStorage();
   const [_, setReRender] = useState(false);
+
+  const [pingEveryVal, setPingEveryVal] = useState<string>(pingEvery[0]);
+  const [forNextVal, setForNextVal] = useState<string>(forTheNext[0]);
+  const [nextPingVal, setNextPingVal] = useState<string>("--");
+  const [intervalExpiresVal, setIntervalExpiresVal] = useState<string>("--");
+
+  const [intervalActive, setIntervalActive] = useState<boolean>(false);
 
   const [pingStatus, pingSvc] = usePing(service);
 
   const { status, lastPinged, retry, reset } = pingStatus;
 
   useEffect(() => {
+    // Activaces Interval when both ping-every and for-next are selected
+    if (pingEveryVal.length > 2 && forNextVal.length > 2) {
+      setIntervalActive(true);
+      setNextPingVal(addTime(pingEveryVal) as string);
+      setIntervalExpiresVal(addTime(forNextVal) as string);
+    }
+
+    // Sets values to local storage when values are selected in UI
+    const currentSvc = get(service.url);
+    console.log("currentSvc 1: ", service.title, currentSvc);
+
+    set(service.url, {
+      ...currentSvc,
+      intervalActive: intervalActive,
+      nextPing: addTime(pingEveryVal),
+      intervalEnd: addTime(forNextVal),
+      pingEvery: pingEveryVal,
+      forNext: forNextVal
+    });
+    const currentSvc2 = get(service.url);
+    console.log("currentSvc 1.1: ", service.title, currentSvc2);
+  }, [pingEveryVal, forNextVal, intervalActive]);
+
+  useEffect(() => {
+    const currentSvc = lStorage.get(service.url);
+    console.log("currentSvc 2: ", service.title, currentSvc);
+    // Set values to state when page refreshes
+    if (currentSvc?.intervalActive) {
+      setIntervalActive(currentSvc?.intervalActive);
+      setPingEveryVal(currentSvc?.pingEvery as string);
+      setForNextVal(currentSvc?.forNext as string);
+      setNextPingVal(currentSvc?.nextPing as string);
+      setIntervalExpiresVal(currentSvc?.intervalEnd as string);
+    }
+  }, []);
+
+  const handleCancelInterval = () => {
+    setIntervalActive(false);
+    setPingEveryVal(pingEvery[0]);
+    setForNextVal(forTheNext[0]);
+    setNextPingVal("--");
+    setIntervalExpiresVal("--");
+
+    const currentSvc = get(service.url);
+
+    set(service.url, {
+      ...currentSvc,
+      intervalActive: false,
+      nextPing: "--",
+      intervalEnd: "--"
+    });
+  };
+
+  useEffect(() => {
     // Re-render the UI to display the latest timings
     const id = setInterval(() => setReRender((prev) => !prev), 15 * 1000);
 
-    return () => clearInterval(id);
+    return clearInterval(id);
   }, []);
 
   return (
@@ -82,7 +151,16 @@ const Service = ({ service }: Props) => {
         </div>
       </td>
       <td className="border-b border-gray-200 px-6 py-4">
-        <select className="h-full bg-transparent px-3 py-2.5 font-sans text-sm text-sm font-normal leading-5 text-gray-500 outline-none">
+        <select
+          name="ping-every"
+          value={pingEveryVal}
+          onChange={(e) => {
+            // If user selects "--", cancel interval
+            if (e.target.value.length == 2) return handleCancelInterval();
+            setPingEveryVal(e.target.value);
+          }}
+          className="h-full bg-transparent px-3 py-2.5 font-sans text-sm text-sm font-normal leading-5 text-gray-500 outline-none"
+        >
           {pingEvery.map((item) => (
             <option key={item} value={item}>
               {item}
@@ -91,7 +169,16 @@ const Service = ({ service }: Props) => {
         </select>
       </td>
       <td className="border-b border-gray-200 px-6 py-4">
-        <select className="h-full bg-transparent px-3 py-2.5 font-sans text-sm text-sm font-normal leading-5 text-gray-500 outline-none">
+        <select
+          name="for-next"
+          value={forNextVal}
+          onChange={(e) => {
+            // If user selects "--", cancel interval
+            if (e.target.value.length == 2) return handleCancelInterval();
+            setForNextVal(e.target.value);
+          }}
+          className="h-full bg-transparent px-3 py-2.5 font-sans text-sm text-sm font-normal leading-5 text-gray-500 outline-none"
+        >
           {forTheNext.map((item) => (
             <option key={item} value={item}>
               {item}
@@ -100,17 +187,41 @@ const Service = ({ service }: Props) => {
         </select>
       </td>
       <td className="border-b border-gray-200 px-6 py-4">
-        <div className="whitespace-nowrap text-sm leading-5 text-gray-500">
-          {true ? "--" : timeDist("2023-05-18T21:34:51.241Z")}
+        <div
+          title={nextPingVal?.length > 3 ? timeInTitle(nextPingVal) : ""}
+          className="whitespace-nowrap text-sm leading-5 text-gray-500"
+        >
+          {intervalActive ? timeDist(nextPingVal) : nextPingVal}
         </div>
       </td>
-      <td className="border-b border-r border-gray-200 px-6 py-4">
-        <div className="text-sm leading-5 text-gray-500">
-          {timeInHandMin("2023-05-18T21:34:51.241Z")}
+      <td className="relative border-b border-r border-gray-200 px-6 py-4">
+        <div
+          title={
+            intervalExpiresVal?.length > 3
+              ? timeInTitle(intervalExpiresVal)
+              : ""
+          }
+          className="text-sm leading-5 text-gray-500"
+        >
+          {intervalActive && (
+            <span
+              onClick={handleCancelInterval}
+              title={`Cancel interval for ${service.title}`}
+              className="absolute right-1 top-0 cursor-pointer"
+            >
+              x
+            </span>
+          )}
+          {intervalActive
+            ? timeInHandMin(intervalExpiresVal)
+            : intervalExpiresVal}
         </div>
       </td>
       <td className="border-b border-gray-200 px-6 py-4">
-        <PingBtn ping={() => pingSvc(service)} />
+        <PingBtn
+          title={`Ping service ${service.title}`}
+          ping={() => pingSvc(service)}
+        />
       </td>
     </tr>
   );

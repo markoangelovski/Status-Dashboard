@@ -67,7 +67,9 @@ export const usePing = (service: ServiceType): UsePingType => {
         set
       );
     } else {
-      setPingStatus({ ...baseStats, status: StatusList.Unknown });
+      const defaultStats = { ...baseStats, status: StatusList.Unknown };
+      setPingStatus(defaultStats);
+      set(service.url, defaultStats);
     }
   }, []);
 

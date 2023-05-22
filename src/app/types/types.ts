@@ -23,8 +23,13 @@ export type PingData = {
 export type StatusType = {
   status?: StatusList;
   lastPinged: string;
+  nextPing?: string;
+  pingEvery?: string;
   retry: string;
   reset: string;
+  forNext?: string;
+  intervalActive?: boolean;
+  intervalEnd?: string;
   pingData: PingData;
 };
 
