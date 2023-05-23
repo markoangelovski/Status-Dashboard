@@ -47,7 +47,7 @@ const Service = ({ service }: Props) => {
 
     // Sets values to local storage when values are selected in UI
     const currentSvc = get(service.url);
-    console.log("currentSvc 1: ", service.title, currentSvc);
+    // console.log("currentSvc 1: ", service.title, currentSvc);
 
     set(service.url, {
       ...currentSvc,
@@ -58,12 +58,12 @@ const Service = ({ service }: Props) => {
       forNext: forNextVal
     });
     const currentSvc2 = get(service.url);
-    console.log("currentSvc 1.1: ", service.title, currentSvc2);
+    // console.log("currentSvc 1.1: ", service.title, currentSvc2);
   }, [pingEveryVal, forNextVal, intervalActive]);
 
   useEffect(() => {
     const currentSvc = lStorage.get(service.url);
-    console.log("currentSvc 2: ", service.title, currentSvc);
+    // console.log("currentSvc 2: ", service.title, currentSvc);
     // Set values to state when page refreshes
     if (currentSvc?.intervalActive) {
       setIntervalActive(currentSvc?.intervalActive);
@@ -93,9 +93,21 @@ const Service = ({ service }: Props) => {
 
   useEffect(() => {
     // Re-render the UI to display the latest timings
-    const id = setInterval(() => setReRender((prev) => !prev), 15 * 1000);
+    // const id = setInterval(() => setReRender((prev) => !prev), 15 * 1000); // This does not work!
+    let id: NodeJS.Timer;
+    const reRender = () => {
+      console.log("Starting interval with id: ", id);
+      id = setInterval(() => {
+        setReRender((prev) => !prev);
+      }, 30 * 1000);
+    };
 
-    return clearInterval(id);
+    window.addEventListener("focus", reRender, { once: true });
+
+    return () => {
+      window.removeEventListener("focus", reRender);
+      clearInterval(id);
+    };
   }, []);
 
   return (
